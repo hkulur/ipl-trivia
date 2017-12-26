@@ -9,7 +9,9 @@ import {
   YAxis,
   HorizontalGridLines,
   VerticalGridLines,
-  LineSeries
+  VerticalBarSeries,
+  LineSeries,
+  DiscreteColorLegend
 } from 'react-vis';
 
 import  { DATA_SUCCESS, fetchData } from '../actions'
@@ -32,7 +34,7 @@ class Home extends Component{
 
 		const { matches } = this.props;
 		console.log(matches);
-		let plot1 = [];
+		let plot1 = [], plot2 = [];
 
 		matches.forEach( function( match, index ){
 
@@ -41,15 +43,25 @@ class Home extends Component{
 			
 			if( idx !== -1 ){
 
-				if( match['Toss_Winner_Id'] === match['Match_Winner_Id'] )
-					
+				if( match['Toss_Winner_Id'] === match['Match_Winner_Id'] ){
 					plot1[idx].y++;
+				}
+
+				if( match['IS_Superover'] === '1' ){
+					plot2[idx].y++;
+				}
+
 
 			}else{
 
 				plot1.push({
 					x : Number(match['Season_Id']),
 					y : match['Toss_Winner_Id'] === match['Match_Winner_Id'] ? 1 : 0
+				})
+
+				plot2.push({
+					x : Number(match['Season_Id']),
+					y : match['IS_Superover'] === '1' ? 1 : 0
 				})
 			}
 
@@ -74,9 +86,24 @@ class Home extends Component{
 						<VerticalGridLines />
 						<XAxis title="Seasons" />
 						<YAxis on0={yAxisOn0} title="Match wins after winning the toss"/>
-						<LineSeries
+						<VerticalBarSeries
 						  className="first-series"
 						  data={plot1}/>
+					</XYPlot>
+				</div>
+
+				<h2> Number of Super Overs for 10 seasons</h2>
+				<div className="display-inline-block">
+					<XYPlot
+						width={300}
+						height={300} >
+						<HorizontalGridLines />
+						<VerticalGridLines />
+						<XAxis title="Seasons" />
+						<YAxis title="Number of Super Overs"/>
+						<LineSeries
+						  className="first-series"
+						  data={plot2}/>
 					</XYPlot>
 				</div>
 			</div>
