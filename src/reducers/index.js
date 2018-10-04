@@ -4,7 +4,7 @@ import  { DATA_SUCCESS } from '../actions'
 
 function matches( state = [], action ){
 
-	switch( action.type ){
+	switch( !!action.type ){
 
 		case DATA_SUCCESS : 
 
