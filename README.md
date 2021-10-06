@@ -1,5 +1,4 @@
 ## Run
 
-To run the code:
-
-    npm install && npm run start
+Local Setup
+`npm install && npm run start`
